@@ -11,11 +11,11 @@
   };
 
   var CSS = `
-#grw-container { position: fixed !important; bottom: 0 !important; right: 0 !important; z-index: 2147483647 !important; width: auto !important; height: auto !important; display: block !important; visibility: visible !important; opacity: 1 !important; font-family: -apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo','Malgun Gothic',sans-serif !important; box-sizing: border-box !important; }
+#grw-container { position: fixed !important; bottom: 30px !important; right: 30px !important; z-index: 9999999999 !important; width: auto !important; height: auto !important; display: block !important; visibility: visible !important; opacity: 1 !important; font-family: -apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo','Malgun Gothic',sans-serif !important; box-sizing: border-box !important; line-height: normal !important; }
 #grw-container * { box-sizing: border-box !important; }
-#grw-bubble{position:fixed!important;bottom:28px!important;right:28px!important;width:58px!important;height:58px!important;background:#0096FF!important;border-radius:50%!important;display:flex!important;align-items:center!important;justify-content:center!important;cursor:pointer!important;box-shadow:0 4px 18px rgba(0,150,255,.38)!important;z-index:2147483647!important;border:none!important;padding:0!important;margin:0!important;transition:transform .18s!important;left:auto!important;top:auto!important}
+#grw-bubble{position:relative!important;width:58px!important;height:58px!important;background:#0096FF!important;border-radius:50%!important;display:flex!important;align-items:center!important;justify-content:center!important;cursor:pointer!important;box-shadow:0 4px 18px rgba(0,150,255,.38)!important;z-index:9999999999!important;border:none!important;padding:0!important;margin:0!important;transition:transform .18s!important}
 #grw-bubble:hover{transform:scale(1.07)!important}
-#grw-window{position:fixed!important;bottom:100px!important;right:28px!important;width:358px!important;height:550px!important;background:#fff!important;border-radius:18px!important;box-shadow:0 10px 44px rgba(0,0,0,.15)!important;flex-direction:column!important;overflow:hidden!important;z-index:2147483646!important;display:none!important;left:auto!important;top:auto!important;font-size:14px!important;color:#222!important}
+#grw-window{position:absolute!important;bottom:75px!important;right:0!important;width:358px!important;height:550px!important;background:#fff!important;border-radius:18px!important;box-shadow:0 10px 44px rgba(0,0,0,.15)!important;flex-direction:column!important;overflow:hidden!important;z-index:9999999998!important;display:none!important;font-size:14px!important;color:#222!important}
 #grw-window.grw-on{display:flex!important}
 #grw-head{background:#0096FF!important;padding:13px 16px!important;display:flex!important;align-items:center!important;gap:10px!important;flex-shrink:0!important}
 #grw-head-icon{width:34px!important;height:34px!important;border-radius:50%!important;background:rgba(255,255,255,.2)!important;display:flex!important;align-items:center!important;justify-content:center!important;flex-shrink:0!important}
@@ -31,9 +31,6 @@
 .grw-bbl{padding:9px 13px!important;font-size:12.5px!important;line-height:1.65!important;margin:0!important;word-break:keep-all!important;white-space:pre-line!important}
 .grw-bot .grw-bbl{background:#fff!important;color:#222!important;border-radius:4px 14px 14px 14px!important;border:1px solid #eaeaea!important}
 .grw-user .grw-bbl{background:#0096FF!important;color:#fff!important;border-radius:14px 4px 14px 14px!important}
-.grw-time{font-size:10px!important;color:#bbb!important;padding:0 3px!important}
-.grw-bot .grw-time{align-self:flex-start!important}
-.grw-user .grw-time{align-self:flex-end!important}
 #grw-faq{border-top:1px solid #efefef!important;background:#fff!important;padding:11px 13px 14px!important;flex-shrink:0!important}
 #grw-faq-label{font-size:10.5px!important;color:#aaa!important;font-weight:600!important;margin:0 0 8px!important}
 #grw-chips{display:flex!important;flex-wrap:wrap!important;gap:6px!important;margin:0 0 9px!important;padding:0!important;list-style:none!important}
@@ -42,6 +39,13 @@
 #grw-mail{width:100%!important;display:flex!important;align-items:center!important;gap:8px!important;padding:9px 13px!important;background:#f0f7ff!important;border:1px solid #cce4ff!important;border-radius:11px!important;cursor:pointer!important;font-size:12px!important;color:#0096FF!important;font-weight:600!important;text-align:left!important;transition:background .12s!important}
 #grw-mail:hover{background:#ddeeff!important}
 #grw-mail span{flex:1!important}
+
+/* 말풍선 입력 중 점 세 개 애니메이션 스타일 */
+.grw-typing { display: flex !important; align-items: center !important; gap: 4px !important; padding: 12px 16px !important; background: #fff !important; border: 1px solid #eaeaea !important; border-radius: 4px 14px 14px 14px !important; max-width: 70px !important; align-self: flex-start !important; }
+.grw-dot { width: 6px !important; height: 6px !important; background: #888 !important; border-radius: 50% !important; animation: grwBounce 1.4s infinite ease-in-out both !important; }
+.grw-dot:nth-child(1) { animation-delay: -0.32s !important; }
+.grw-dot:nth-child(2) { animation-delay: -0.16s !important; }
+@keyframes grwBounce { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1); } }
   `;
 
   var style = document.createElement('style');
@@ -51,7 +55,7 @@
   var container = document.createElement('div');
   container.id = 'grw-container';
   container.innerHTML = `
-<button id="grw-bubble" type="button" aria-label="고객센터 열기">
+<button id="grw-bubble" type="button">
   <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
 </button>
 <div id="grw-window">
@@ -94,28 +98,48 @@
   bubble.onclick = function() { win.classList.toggle('grw-on'); };
   document.getElementById('grw-close').onclick = function() { win.classList.remove('grw-on'); };
 
+  // 공통 메시지 추가 시스템 함수들 정의
+  function addMsg(text, type) {
+    var msgClass = type === 'user' ? 'grw-msg grw-user' : 'grw-msg grw-bot';
+    mBox.innerHTML += `<div class="${msgClass}"><p class="grw-bbl">${text}</p></div>`;
+    mBox.scrollTop = mBox.scrollHeight;
+  }
+
+  function showTyping() {
+    var typingDiv = document.createElement('div');
+    typingDiv.id = 'grw-loading-dots';
+    typingDiv.className = 'grw-typing';
+    typingDiv.innerHTML = '<div class="grw-dot"></div><div class="grw-dot"></div><div class="grw-dot"></div>';
+    mBox.appendChild(typingDiv);
+    mBox.scrollTop = mBox.scrollHeight;
+  }
+
   var chips = document.querySelectorAll('.grw-chip');
   chips.forEach(function(chip) {
     chip.onclick = function() {
       var item = DATA[chip.getAttribute('data-key')];
-      mBox.innerHTML += `<div class="grw-msg grw-user"><p class="grw-bbl">${item.q}</p></div>`;
-      mBox.scrollTop = mBox.scrollHeight;
+      addMsg(item.q, 'user');
+      showTyping();
       setTimeout(function(){
-        mBox.innerHTML += `<div class="grw-msg grw-bot"><p class="grw-bbl">${item.a}</p></div>`;
-        mBox.scrollTop = mBox.scrollHeight;
-      }, 250);
+        hideTyping();
+        addMsg(item.a, 'bot');
+      }, 350);
     };
   });
 
+  function hideTyping() {
+    var dots = document.getElementById('grw-loading-dots');
+    if(dots) dots.remove();
+  }
+
+  // 🎯 요청하신 원래 이메일 타이머 로직 100% 복구 및 적용 완료!
   document.getElementById('grw-mail').onclick = function(e) {
     e.stopPropagation();
-    mBox.innerHTML += `<div class="grw-msg grw-user"><p class="grw-bbl">이메일로 문의하고 싶어요.</p></div>`;
-    mBox.scrollTop = mBox.scrollHeight;
+    addMsg("이메일로 문의하고 싶어요.", 'user');
+    showTyping();
     setTimeout(function(){
-      mBox.innerHTML += `<div class="grw-msg grw-bot"><p class="grw-bbl">아래 이메일로 문의해 주시면 빠르게 답변드리겠습니다 😊\n📧 rele.help@kt.com</p></div>`;
-      mBox.scrollTop = mBox.scrollHeight;
-    }, 250);
+      hideTyping();
+      addMsg("아래 이메일로 문의해 주시면 빠르게 답변드리겠습니다 😊\n📧 rele.help@kt.com", 'bot');
+    }, 350);
   };
-
-  console.log("🔥 수정된 UI 코드가 정상 실행되었습니다!");
 })();
