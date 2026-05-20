@@ -1,9 +1,10 @@
 (function(){
-  // 1. 기존에 혹시나 잘못 생성된 위젯이 있다면 완벽 청소
+  // 기존에 있던 위젯 컨테이너가 있다면 먼저 깨끗하게 제거
   var old = document.getElementById('grw-container');
   if(old) old.remove();
 
- var DATA = {
+  // 1. FAQ 데이터 영역 (친절하고 세련된 토스/채널톡 대화체)
+  var DATA = {
     settlement: { 
       q: "정산금은 언제 입금되나요?", 
       a: "정산금은 앨범이 발매된 달(M)을 기준으로 2개월 뒤(M+2)에 지급해 드려요.\n\n📅 정산 일정 안내\n• 매월 15일: 정산 리포트 발행\n• 매월 말일: 정산금 입금\n\n💡 예시\n1월 발매 ➡️ 3월 15일 리포트 확인 ➡️ 3월 말 정산금 입금\n\n📍 확인 경로\n로그인 > 통계 및 정산 > 정산\n\n※ 해외 플랫폼의 경우, 정산 데이터 정리에 정산월 기준 최대 6개월에서 1년까지 소요될 수 있는 점 양해 부탁드립니다." 
@@ -26,7 +27,7 @@
     }
   };
 
-  // 어떤 부모 레이어에 갇혀도 화면 우측 하단에 무조건 튀어나오게 만드는 깡패 CSS
+  // 2. 스타일시트 주입
   var CSS = `
 #grw-container { position: fixed !important; bottom: 30px !important; right: 30px !important; z-index: 2147483647 !important; width: auto !important; height: auto !important; display: block !important; visibility: visible !important; opacity: 1 !important; font-family: -apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo','Malgun Gothic',sans-serif !important; box-sizing: border-box !important; line-height: normal !important; }
 #grw-container * { box-sizing: border-box !important; }
@@ -57,7 +58,6 @@
 #grw-mail:hover{background:#ddeeff!important}
 #grw-mail span{flex:1!important}
 
-/* 말풍선 입력 중 점 세 개 애니메이션 스타일 */
 .grw-typing { display: flex !important; align-items: center !important; gap: 4px !important; padding: 12px 16px !important; background: #fff !important; border: 1px solid #eaeaea !important; border-radius: 4px 14px 14px 14px !important; max-width: 70px !important; align-self: flex-start !important; }
 .grw-dot { width: 6px !important; height: 6px !important; background: #888 !important; border-radius: 50% !important; animation: grwBounce 1.4s infinite ease-in-out both !important; }
 .grw-dot:nth-child(1) { animation-delay: -0.32s !important; }
@@ -69,15 +69,14 @@
   style.textContent = CSS;
   document.head.appendChild(style);
 
+  // 3. HTML 레이아웃 구조 생성
   var container = document.createElement('div');
   container.id = 'grw-container';
   container.innerHTML = `
 <button id="grw-bubble" type="button">
- // grw-bubble SVG 영역
-  bubble.innerHTML = `
-<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-  <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
-</svg>
+  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="12" cy="5" r="2"/><path d="M12 7v4M8 15h.01M16 15h.01"/>
+  </svg>
 </button>
 <div id="grw-window">
   <div id="grw-head">
@@ -102,7 +101,7 @@
       <button type="button" class="grw-chip" data-key="stop">⏹ 발매 중지</button>
       <button type="button" class="grw-chip" data-key="transfer">📦 앨범 이관</button>
     </div>
-   <button type="button" id="grw-mail">
+    <button type="button" id="grw-mail">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0096FF" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/></svg>
       <span>원하는 답변을 찾지 못했다면? 이메일 문의하기</span>
       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#0096FF" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
@@ -110,16 +109,18 @@
   </div>
 </div>`;
 
-  // DOM이 덜 렌더링되었을 때를 대비해 안정적인 삽입 로직 구현
+  // 4. 지니릴리 레이어 안으로 안전하게 안착시키는 주입 함수
   function injectWidget() {
-    if (document.body) {
-      document.body.appendChild(container);
+    var target = document.querySelector('.main_introduction_container') || document.body;
+    if (target) {
+      target.appendChild(container);
       initEvents();
     } else {
-      setTimeout(injectWidget, 50);
+      setTimeout(injectWidget, 30);
     }
   }
 
+  // 5. 버튼 클릭 및 애니메이션 이벤트 바인딩
   function initEvents() {
     var bubble = document.getElementById('grw-bubble');
     var win = document.getElementById('grw-window');
@@ -128,7 +129,6 @@
     bubble.onclick = function() { win.classList.toggle('grw-on'); };
     document.getElementById('grw-close').onclick = function() { win.classList.remove('grw-on'); };
 
-    // 질문 메시지 공통 함수
     window.addMsg = function(text, type) {
       var msgClass = type === 'user' ? 'grw-msg grw-user' : 'grw-msg grw-bot';
       mBox.innerHTML += `<div class="${msgClass}"><p class="grw-bbl">${text}</p></div>`;
@@ -149,7 +149,6 @@
       if(dots) dots.remove();
     };
 
-    // FAQ 칩 클릭 이벤트
     var chips = document.querySelectorAll('.grw-chip');
     chips.forEach(function(chip) {
       chip.onclick = function() {
@@ -163,7 +162,6 @@
       };
     });
 
-    // 🎯 요청하신 원래 이메일 타이머 로직 100% 복구 및 적용 완료!
     document.getElementById('grw-mail').onclick = function(e) {
       e.stopPropagation();
       addMsg("이메일로 문의하고 싶어요.", 'user');
@@ -176,4 +174,5 @@
   }
 
   injectWidget();
+  console.log("🚀 [Git 배포용] 최신 트렌디 봇 위젯 로드 완료!");
 })();
