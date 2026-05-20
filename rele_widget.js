@@ -62,8 +62,8 @@
     #grw-chips { display: flex !important; flex-wrap: wrap !important; gap: 6px !important; margin: 0 0 9px !important; padding: 0 !important; list-style: none !important; }
     
     /* ✨ 칩 내부 글자 굵기(Regular) 및 세련된 차콜색(#4A5568) 반영 */
-    /* 칩 내부 글자를 일반(400)보다 딱 1.5단계 올린 Medium(500) 두께로 세팅 */
-.grw-chip { padding: 6px 12px !important; border: 1px solid #e2e8f0 !important; border-radius: 18px !important; font-size: 11.5px !important; font-weight: 600 !important; color: #4A5568 !important; background: #f8fafc !important; cursor: pointer !important; transition: all .12s !important; }important; cursor: pointer !important; transition: all .12s !important; }
+    /* 칩 내부 글자를 일반(400)보다 딱 1.5단계 올린 Medium(550) 두께로 세팅 */
+.grw-chip { padding: 6px 12px !important; border: 1px solid #e2e8f0 !important; border-radius: 18px !important; font-size: 11.5px !important; font-weight: 550 !important; color: #4A5568 !important; background: #f8fafc !important; cursor: pointer !important; transition: all .12s !important; }important; cursor: pointer !important; transition: all .12s !important; }
     .grw-chip:hover { background: #e8f4ff !important; border-color: #0096FF !important; color: #0096FF !important; }
     
     #grw-mail { width: 100%!important; display: flex !important; align-items: center !important; gap: 8px !important; padding: 9px 13px !important; background: #f0f7ff !important; border: 1px solid #cce4ff !important; border-radius: 11px !important; cursor: pointer !important; font-size: 12px !important; color: #0096FF !important; font-weight: 600 !important; text-align: left !important; transition: background .12s !important; }
