@@ -49,4 +49,172 @@
 .grw-bot .grw-time{align-self:flex-start!important}
 .grw-user .grw-time{align-self:flex-end!important}
 .grw-typing-wrap{align-self:flex-start!important}
-.grw-typing{display:flex!important;align-items:center!important;
+.grw-typing{display:flex!important;align-items:center!important;gap:4px!important;padding:10px 14px!important;background:#fff!important;border:1px solid #eaeaea!important;border-radius:4px 14px 14px 14px!important}
+.grw-dot{width:6px!important;height:6px!important;border-radius:50%!important;background:#bbb!important;display:inline-block!important;animation:grw-blink 1.2s infinite!important}
+.grw-dot:nth-child(2){animation-delay:.2s!important}
+.grw-dot:nth-child(3){animation-delay:.4s!important}
+@keyframes grw-blink{0%,80%,100%{opacity:.2}40%{opacity:1}}
+#grw-faq{border-top:1px solid #efefef!important;flex-shrink:0!important;background:#fff!important;padding:11px 13px 14px!important}
+#grw-faq-label{font-size:10.5px!important;color:#aaa!important;font-weight:600!important;margin:0 0 8px!important;padding:0!important}
+#grw-chips{display:flex!important;flex-wrap:wrap!important;gap:6px!important;margin:0 0 9px!important;padding:0!important;list-style:none!important}
+.grw-chip{padding:6px 12px!important;border:1px solid #e2e8f0!important;border-radius:18px!important;font-size:11.5px!important;font-weight:500!important;color:#444!important;background:#f8fafc!important;cursor:pointer!important;display:inline-flex!important;align-items:center!important;gap:5px!important;transition:all .12s!important;font-family:inherit!important;line-height:1!important;margin:0!important}
+.grw-chip:hover{background:#e8f4ff!important;border-color:#0096FF!important;color:#0096FF!important}
+#grw-mail{width:100%!important;display:flex!important;align-items:center!important;gap:8px!important;padding:9px 13px!important;background:#f0f7ff!important;border:1px solid #cce4ff!important;border-radius:11px!important;cursor:pointer!important;font-size:12px!important;font-weight:600!important;color:#0096FF!important;transition:background .12s!important;font-family:inherit!important;text-align:left!important;margin:0!important}
+#grw-mail:hover{background:#ddeeff!important}
+#grw-mail span{flex:1!important}
+  `;
+
+  function injectCSS() {
+    var s = document.createElement('style');
+    s.textContent = CSS;
+    document.head.appendChild(s);
+  }
+
+  function getTime() {
+    return new Date().toLocaleTimeString('ko-KR', {hour:'2-digit', minute:'2-digit'});
+  }
+
+  function addMsg(text, role) {
+    var msgs = document.getElementById('grw-msgs');
+    if(!msgs) return;
+    var d = document.createElement('div');
+    d.className = 'grw-msg grw-' + role;
+    var b = document.createElement('p');
+    b.className = 'grw-bbl';
+    b.textContent = text;
+    var s = document.createElement('span');
+    s.className = 'grw-time';
+    s.textContent = getTime();
+    d.appendChild(b); d.appendChild(s);
+    msgs.appendChild(d);
+    msgs.scrollTop = msgs.scrollHeight;
+  }
+
+  function showTyping() {
+    var msgs = document.getElementById('grw-msgs');
+    if(!msgs) return;
+    var d = document.createElement('div');
+    d.className = 'grw-typing-wrap'; d.id = 'grw-ty';
+    d.innerHTML = '<div class="grw-typing"><span class="grw-dot"></span><span class="grw-dot"></span><span class="grw-dot"></span></div>';
+    msgs.appendChild(d); msgs.scrollTop = msgs.scrollHeight;
+  }
+
+  function hideTyping() {
+    var el = document.getElementById('grw-ty');
+    if (el) el.parentNode.removeChild(el);
+  }
+
+  function ask(key) {
+    var item = DATA[key]; if (!item) return;
+    addMsg(item.q, 'user');
+    showTyping();
+    setTimeout(function(){ hideTyping(); addMsg(item.a, 'bot'); }, 350);
+  }
+
+  function buildHTML() {
+    // 중복 생성 방지
+    if(document.getElementById('grw-container')) return;
+
+    var container = document.createElement('div');
+    container.id = 'grw-container';
+    
+    container.innerHTML = `
+<button id="grw-bubble" type="button" aria-label="고객센터 열기">
+  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+</button>
+<div id="grw-window">
+  <div id="grw-head">
+    <div id="grw-head-icon">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+    </div>
+    <div id="grw-head-txt">
+      <p id="grw-head-name">genie rele 고객센터</p>
+      <p id="grw-head-sub">지니릴리 음원 유통 서비스</p>
+    </div>
+    <button id="grw-close" type="button" aria-label="닫기">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+  <div id="grw-msgs">
+    <div class="grw-msg grw-bot">
+      <p class="grw-bbl">안녕하세요! genie rele 고객센터입니다 😊\n\n자주 묻는 질문을 아래에서 선택해 주세요.\n해당 내용이 없으면 이메일로 문의해 주세요.</p>
+      <span class="grw-time" id="grw-init-time"></span>
+    </div>
+  </div>
+  <div id="grw-faq">
+    <p id="grw-faq-label">자주 묻는 질문</p>
+    <div id="grw-chips">
+      <button type="button" class="grw-chip" data-key="settlement">💰 정산금 입금</button>
+      <button type="button" class="grw-chip" data-key="refund">💳 환불 방법</button>
+      <button type="button" class="grw-chip" data-key="cancel">🚫 상품 해지</button>
+      <button type="button" class="grw-chip" data-key="stop">⏹ 발매 중지</button>
+      <button type="button" class="grw-chip" data-key="transfer">📦 앨범 이관</button>
+    </div>
+    <button type="button" id="grw-mail">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0096FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/></svg>
+      <span>해당 내용이 없다면 이메일로 문의하기</span>
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#0096FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </button>
+  </div>
+</div>`;
+    
+    document.body.appendChild(container);
+  }
+
+  function init() {
+    injectCSS();
+    buildHTML();
+
+    var it = document.getElementById('grw-init-time');
+    if (it) it.textContent = getTime();
+
+    var bubble = document.getElementById('grw-bubble');
+    var win = document.getElementById('grw-window');
+
+    if(bubble && win) {
+      bubble.onclick = function(e) {
+        e.stopPropagation(); e.preventDefault();
+        win.classList.toggle('grw-on');
+        return false;
+      };
+    }
+
+    var closeBtn = document.getElementById('grw-close');
+    if(closeBtn && win) {
+      closeBtn.onclick = function(e) {
+        e.stopPropagation();
+        win.classList.remove('grw-on');
+      };
+    }
+
+    var chips = document.querySelectorAll('.grw-chip');
+    for (var i = 0; i < chips.length; i++) {
+      (function(chip){
+        chip.onclick = function(e) {
+          e.stopPropagation();
+          ask(chip.getAttribute('data-key'));
+        };
+      })(chips[i]);
+    }
+
+    var mailBtn = document.getElementById('grw-mail');
+    if(mailBtn) {
+      mailBtn.onclick = function(e) {
+        e.stopPropagation();
+        addMsg("이메일로 문의하고 싶어요.", 'user');
+        showTyping();
+        setTimeout(function(){
+          hideTyping();
+          addMsg("아래 이메일로 문의해 주시면 빠르게 답변드리겠습니다 😊\n📧 rele.help@kt.com", 'bot');
+        }, 350);
+      };
+    }
+  }
+
+  // 실서버 로드가 끝난 상태(콘솔 주입)여도 즉시 실행되도록 보완
+  if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    init();
+  } else {
+    document.addEventListener('DOMContentLoaded', init);
+  }
+})();
