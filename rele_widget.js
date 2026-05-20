@@ -74,9 +74,8 @@
   container.innerHTML = `
 <button id="grw-bubble" type="button">
  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2">
-  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-  <path d="M12 7l1.5 1.5 1.5-1.5-1.5-1.5L12 7zm0 0v-4" stroke-opacity="0.5"/>
-  <path d="M16 7l1.5 1.5 1.5-1.5-1.5-1.5L16 7z" stroke-opacity="0.5"/>
+  <path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>
+  <path d="M22 22l-3-3m0 0a1 1 0 1 0-2 2 1 1 0 0 0 2-2z" stroke-width="1.5"/>
 </svg>
 </button>
 <div id="grw-window">
