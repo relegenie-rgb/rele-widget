@@ -3,7 +3,7 @@
   var old = document.getElementById('grw-container');
   if(old) old.remove();
 
-  // 1. FAQ 데이터 영역 (친절하고 세련된 토스/채널톡 대화체)
+  // 1. FAQ 데이터 영역
   var DATA = {
     settlement: { 
       q: "정산금은 언제 입금되나요?", 
@@ -75,7 +75,9 @@
   container.innerHTML = `
 <button id="grw-bubble" type="button">
   <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="12" cy="5" r="2"/><path d="M12 7v4M8 15h.01M16 15h.01"/>
+    <rect x="3" y="11" width="18" height="10" rx="2"/>
+    <circle cx="12" cy="5" r="2"/>
+    <path d="M12 7v4M8 15h.01M16 15h.01"/>
   </svg>
 </button>
 <div id="grw-window">
@@ -109,7 +111,7 @@
   </div>
 </div>`;
 
-  // 4. 지니릴리 레이어 안으로 안전하게 안착시키는 주입 함수
+  // 4. 주입 함수
   function injectWidget() {
     var target = document.querySelector('.main_introduction_container') || document.body;
     if (target) {
@@ -120,7 +122,7 @@
     }
   }
 
-  // 5. 버튼 클릭 및 애니메이션 이벤트 바인딩
+  // 5. 이벤트 바인딩
   function initEvents() {
     var bubble = document.getElementById('grw-bubble');
     var win = document.getElementById('grw-window');
