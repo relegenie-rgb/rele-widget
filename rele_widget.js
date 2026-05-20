@@ -1,5 +1,4 @@
 (function(){
-  // 1. 혹시 기존에 테스트로 들어간 껍데기가 있다면 싹 청소
   var old = document.getElementById('grw-container');
   if(old) old.remove();
 
@@ -45,12 +44,10 @@
 #grw-mail span{flex:1!important}
   `;
 
-  // 스타일 주입
   var style = document.createElement('style');
   style.textContent = CSS;
   document.head.appendChild(style);
 
-  // 컨테이너 생성 및 강제 주입
   var container = document.createElement('div');
   container.id = 'grw-container';
   container.innerHTML = `
@@ -90,7 +87,6 @@
 
   document.body.appendChild(container);
 
-  // 버튼 제어 로직들
   var bubble = document.getElementById('grw-bubble');
   var win = document.getElementById('grw-window');
   var mBox = document.getElementById('grw-msgs');
@@ -98,17 +94,12 @@
   bubble.onclick = function() { win.classList.toggle('grw-on'); };
   document.getElementById('grw-close').onclick = function() { win.classList.remove('grw-on'); };
 
-  // 질문 칩 클릭 시 스크롤 제어 포함 동작
   var chips = document.querySelectorAll('.grw-chip');
   chips.forEach(function(chip) {
     chip.onclick = function() {
       var item = DATA[chip.getAttribute('data-key')];
-      
-      // 유저 말풍선 추가
       mBox.innerHTML += `<div class="grw-msg grw-user"><p class="grw-bbl">${item.q}</p></div>`;
       mBox.scrollTop = mBox.scrollHeight;
-      
-      // 봇 답변 추가
       setTimeout(function(){
         mBox.innerHTML += `<div class="grw-msg grw-bot"><p class="grw-bbl">${item.a}</p></div>`;
         mBox.scrollTop = mBox.scrollHeight;
@@ -116,20 +107,15 @@
     };
   });
 
-  // [누락 복구] 이메일 문의하기 버튼 이벤트 🎯
   document.getElementById('grw-mail').onclick = function(e) {
     e.stopPropagation();
-    
-    // 유저 메시지 추가
     mBox.innerHTML += `<div class="grw-msg grw-user"><p class="grw-bbl">이메일로 문의하고 싶어요.</p></div>`;
     mBox.scrollTop = mBox.scrollHeight;
-    
-    // 봇 안내 메시지 추가
     setTimeout(function(){
       mBox.innerHTML += `<div class="grw-msg grw-bot"><p class="grw-bbl">아래 이메일로 문의해 주시면 빠르게 답변드리겠습니다 😊\n📧 rele.help@kt.com</p></div>`;
       mBox.scrollTop = mBox.scrollHeight;
     }, 250);
   };
 
-  console.log("🔥 이메일 기능이 복구된 치트키 코드 주입 완료!");
+  console.log("🔥 수정된 UI 코드가 정상 실행되었습니다!");
 })();
