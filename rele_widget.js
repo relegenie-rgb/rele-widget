@@ -27,7 +27,7 @@
     }
   };
 
-  // 2. CSS 스타일 정의
+  // 2. CSS 스타일 정의 (폰트 굵기 Regular 수정 및 차콜 색상 #4A5568 반영)
   var CSS = `
     #grw-container { position: fixed !important; bottom: 30px !important; right: 30px !important; z-index: 2147483647 !important; width: auto !important; height: auto !important; display: block !important; visibility: visible !important; opacity: 1 !important; font-family: -apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo','Malgun Gothic',sans-serif !important; box-sizing: border-box !important; line-height: normal !important; }
     #grw-container * { box-sizing: border-box !important; }
@@ -35,25 +35,36 @@
     #grw-bubble:hover { transform: scale(1.07) !important; }
     #grw-window { position: absolute !important; bottom: 75px !important; right: 0 !important; width: 358px !important; height: 550px !important; background: #fff !important; border-radius: 18px !important; box-shadow: 0 10px 44px rgba(0,0,0,0.15) !important; flex-direction: column !important; overflow: hidden !important; z-index: 2147483646 !important; display: none !important; font-size: 14px !important; color: #222 !important; }
     #grw-window.grw-on { display: flex !important; }
-    #grw-head { background: #0096FF !important; padding: 13px 16px !important; display: flex !important; align-items: center !important; gap: 10px !important; flex-shrink: 0 !important; }
+    #grw-head { background: #0096FF !important; padding: 14px 16px !important; display: flex !important; align-items: center !important; gap: 12px !important; flex-shrink: 0 !important; }
     #grw-head-icon { width: 34px !important; height: 34px !important; border-radius: 50% !important; background: rgba(255,255,255,0.2) !important; display: flex !important; align-items: center !important; justify-content: center !important; flex-shrink: 0 !important; }
     #grw-head-txt { flex: 1 !important; }
     #grw-head-name { color: #fff !important; font-size: 13px !important; font-weight: 700 !important; margin: 0 !important; }
     #grw-head-sub { color: rgba(255,255,255,0.75) !important; font-size: 11px !important; margin: 2px 0 0 !important; }
-    #grw-close { background: none !important; border: none !important; cursor: pointer !important; color: rgba(255,255,255,0.85) !important; width: 28px !important; height: 28px !important; display: flex !important; align-items: center !important; justify-content: center !important; border-radius: 50% !important; }
-    #grw-close:hover { background: rgba(255,255,255,0.15) !important; }
+    
+    #grw-close { background: none !important; border: none !important; cursor: pointer !important; color: rgba(255,255,255,0.85) !important; width: 30px !important; height: 30px !important; display: flex !important; align-items: center !important; justify-content: center !important; border-radius: 50% !important; transition: all 0.2s ease !important; padding: 0 !important; }
+    #grw-close:hover { background: rgba(255,255,255,0.15) !important; color: #fff !important; transform: rotate(90deg) !important; }
+    
     #grw-msgs { flex: 1 !important; overflow-y: auto !important; padding: 16px 13px !important; display: flex !important; flex-direction: column !important; gap: 12px !important; background: #f7f8fa !important; scroll-behavior: smooth !important; }
+    #grw-msgs::-webkit-scrollbar { width: 5px !important; }
+    #grw-msgs::-webkit-scrollbar-track { background: transparent !important; }
+    #grw-msgs::-webkit-scrollbar-thumb { background: rgba(0, 0, 0, 0.1) !important; border-radius: 10px !important; }
+    #grw-msgs::-webkit-scrollbar-thumb:hover { background: rgba(0, 0, 0, 0.2) !important; }
+
     .grw-msg { display: flex !important; flex-direction: column !important; gap: 3px !important; max-width: 88% !important; }
     .grw-msg.grw-bot { align-self: flex-start !important; }
     .grw-msg.grw-user { align-self: flex-end !important; }
     .grw-bbl { padding: 9px 13px !important; font-size: 12.5px !important; line-height: 1.65 !important; margin: 0 !important; word-break: keep-all !important; white-space: pre-line !important; }
     .grw-bot .grw-bbl { background: #fff !important; color: #222 !important; border-radius: 4px 14px 14px 14px !important; border: 1px solid #eaeaea !important; }
     .grw-user .grw-bbl { background: #0096FF !important; color: #fff !important; border-radius: 14px 4px 14px 14px !important; }
+    
     #grw-faq { border-top: 1px solid #efefef !important; background: #fff !important; padding: 11px 13px 14px !important; flex-shrink: 0 !important; }
     #grw-faq-label { font-size: 10.5px !important; color: #aaa !important; font-weight: 600 !important; margin: 0 0 8px !important; }
     #grw-chips { display: flex !important; flex-wrap: wrap !important; gap: 6px !important; margin: 0 0 9px !important; padding: 0 !important; list-style: none !important; }
-    .grw-chip { padding: 6px 12px !important; border: 1px solid #e2e8f0 !important; border-radius: 18px !important; font-size: 11.5px !important; color: #444 !important; background: #f8fafc !important; cursor: pointer !important; transition: all .12s !important; }
+    
+    /* ✨ 칩 내부 글자 굵기(Regular) 및 세련된 차콜색(#4A5568) 반영 */
+    .grw-chip { padding: 6px 12px !important; border: 1px solid #e2e8f0 !important; border-radius: 18px !important; font-size: 11.5px !important; font-weight: 400 !important; color: #4A5568 !important; background: #f8fafc !important; cursor: pointer !important; transition: all .12s !important; }
     .grw-chip:hover { background: #e8f4ff !important; border-color: #0096FF !important; color: #0096FF !important; }
+    
     #grw-mail { width: 100%!important; display: flex !important; align-items: center !important; gap: 8px !important; padding: 9px 13px !important; background: #f0f7ff !important; border: 1px solid #cce4ff !important; border-radius: 11px !important; cursor: pointer !important; font-size: 12px !important; color: #0096FF !important; font-weight: 600 !important; text-align: left !important; transition: background .12s !important; }
     #grw-mail:hover { background: #ddeeff !important; }
     #grw-mail span { flex: 1 !important; }
@@ -68,7 +79,7 @@
   style.textContent = CSS;
   document.head.appendChild(style);
 
-  // 3. HTML 생성
+  // 3. HTML 생성 (이모지 최신화 반영)
   var container = document.createElement('div');
   container.id = 'grw-container';
   container.innerHTML = `
@@ -86,7 +97,12 @@
           <p id="grw-head-name" style="margin:0;color:#fff;font-weight:bold;">genie rele 고객센터</p>
           <p id="grw-head-sub" style="margin:0;color:rgba(255,255,255,0.7);font-size:11px;">지니릴리 음원 유통 서비스</p>
         </div>
-        <button id="grw-close" type="button" style="color:#fff;background:none;border:none;cursor:pointer;font-size:16px;">X</button>
+        <button id="grw-close" type="button">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
       </div>
       <div id="grw-msgs">
         <div class="grw-msg grw-bot">
@@ -98,8 +114,8 @@
         <div id="grw-chips">
           <button type="button" class="grw-chip" data-key="settlement">💰 정산금 입금</button>
           <button type="button" class="grw-chip" data-key="refund">💳 환불 방법</button>
-          <button type="button" class="grw-chip" data-key="cancel">🚫 상품 해지</button>
-          <button type="button" class="grw-chip" data-key="stop">⏹ 발매 중지</button>
+          <button type="button" class="grw-chip" data-key="cancel">🔓 상품 해지</button>
+          <button type="button" class="grw-chip" data-key="stop">🚫 발매 중지</button>
           <button type="button" class="grw-chip" data-key="transfer">📦 앨범 이관</button>
         </div>
         <button type="button" id="grw-mail">
@@ -176,5 +192,5 @@
   }
 
   injectWidget();
-  console.log("🚀 오타 박멸! 귀여운 로봇 위젯 로드 성공!");
+  console.log("🚀 [최종 디자인 버전] 칩 글자 굵기/차콜색상/이모지 수정 완료!");
 })();
