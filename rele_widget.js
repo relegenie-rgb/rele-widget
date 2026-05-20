@@ -1,4 +1,5 @@
 (function(){
+  // 1. 기존에 혹시나 잘못 생성된 위젯이 있다면 완벽 청소
   var old = document.getElementById('grw-container');
   if(old) old.remove();
 
@@ -10,12 +11,13 @@
     transfer: { q: "서비스 종료 시 앨범 이관이 가능한가요?", a: "별도의 앨범 이관 작업은 지원되지 않습니다.\n\n다만 서비스 종료 요청이 접수된 경우, 타 유통사 이관에 필요한 데이터(UPC, ISRC 코드 등)는 전달해 드리고 있습니다.\n\n데이터를 받지 못하셨다면 고객센터로 문의해 주세요.\n📧 rele.help@kt.com" }
   };
 
+  // 어떤 부모 레이어에 갇혀도 화면 우측 하단에 무조건 튀어나오게 만드는 깡패 CSS
   var CSS = `
-#grw-container { position: fixed !important; bottom: 30px !important; right: 30px !important; z-index: 9999999999 !important; width: auto !important; height: auto !important; display: block !important; visibility: visible !important; opacity: 1 !important; font-family: -apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo','Malgun Gothic',sans-serif !important; box-sizing: border-box !important; line-height: normal !important; }
+#grw-container { position: fixed !important; bottom: 30px !important; right: 30px !important; z-index: 2147483647 !important; width: auto !important; height: auto !important; display: block !important; visibility: visible !important; opacity: 1 !important; font-family: -apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo','Malgun Gothic',sans-serif !important; box-sizing: border-box !important; line-height: normal !important; }
 #grw-container * { box-sizing: border-box !important; }
-#grw-bubble{position:relative!important;width:58px!important;height:58px!important;background:#0096FF!important;border-radius:50%!important;display:flex!important;align-items:center!important;justify-content:center!important;cursor:pointer!important;box-shadow:0 4px 18px rgba(0,150,255,.38)!important;z-index:9999999999!important;border:none!important;padding:0!important;margin:0!important;transition:transform .18s!important}
+#grw-bubble{position:relative!important;width:58px!important;height:58px!important;background:#0096FF!important;border-radius:50%!important;display:flex!important;align-items:center!important;justify-content:center!important;cursor:pointer!important;box-shadow:0 4px 18px rgba(0,150,255,.38)!important;z-index:2147483647!important;border:none!important;padding:0!important;margin:0!important;transition:transform .18s!important}
 #grw-bubble:hover{transform:scale(1.07)!important}
-#grw-window{position:absolute!important;bottom:75px!important;right:0!important;width:358px!important;height:550px!important;background:#fff!important;border-radius:18px!important;box-shadow:0 10px 44px rgba(0,0,0,.15)!important;flex-direction:column!important;overflow:hidden!important;z-index:9999999998!important;display:none!important;font-size:14px!important;color:#222!important}
+#grw-window{position:absolute!important;bottom:75px!important;right:0!important;width:358px!important;height:550px!important;background:#fff!important;border-radius:18px!important;box-shadow:0 10px 44px rgba(0,0,0,.15)!important;flex-direction:column!important;overflow:hidden!important;z-index:2147483646!important;display:none!important;font-size:14px!important;color:#222!important}
 #grw-window.grw-on{display:flex!important}
 #grw-head{background:#0096FF!important;padding:13px 16px!important;display:flex!important;align-items:center!important;gap:10px!important;flex-shrink:0!important}
 #grw-head-icon{width:34px!important;height:34px!important;border-radius:50%!important;background:rgba(255,255,255,.2)!important;display:flex!important;align-items:center!important;justify-content:center!important;flex-shrink:0!important}
@@ -89,57 +91,70 @@
   </div>
 </div>`;
 
-  document.body.appendChild(container);
-
-  var bubble = document.getElementById('grw-bubble');
-  var win = document.getElementById('grw-window');
-  var mBox = document.getElementById('grw-msgs');
-  
-  bubble.onclick = function() { win.classList.toggle('grw-on'); };
-  document.getElementById('grw-close').onclick = function() { win.classList.remove('grw-on'); };
-
-  // 공통 메시지 추가 시스템 함수들 정의
-  function addMsg(text, type) {
-    var msgClass = type === 'user' ? 'grw-msg grw-user' : 'grw-msg grw-bot';
-    mBox.innerHTML += `<div class="${msgClass}"><p class="grw-bbl">${text}</p></div>`;
-    mBox.scrollTop = mBox.scrollHeight;
+  // DOM이 덜 렌더링되었을 때를 대비해 안정적인 삽입 로직 구현
+  function injectWidget() {
+    if (document.body) {
+      document.body.appendChild(container);
+      initEvents();
+    } else {
+      setTimeout(injectWidget, 50);
+    }
   }
 
-  function showTyping() {
-    var typingDiv = document.createElement('div');
-    typingDiv.id = 'grw-loading-dots';
-    typingDiv.className = 'grw-typing';
-    typingDiv.innerHTML = '<div class="grw-dot"></div><div class="grw-dot"></div><div class="grw-dot"></div>';
-    mBox.appendChild(typingDiv);
-    mBox.scrollTop = mBox.scrollHeight;
-  }
+  function initEvents() {
+    var bubble = document.getElementById('grw-bubble');
+    var win = document.getElementById('grw-window');
+    var mBox = document.getElementById('grw-msgs');
+    
+    bubble.onclick = function() { win.classList.toggle('grw-on'); };
+    document.getElementById('grw-close').onclick = function() { win.classList.remove('grw-on'); };
 
-  var chips = document.querySelectorAll('.grw-chip');
-  chips.forEach(function(chip) {
-    chip.onclick = function() {
-      var item = DATA[chip.getAttribute('data-key')];
-      addMsg(item.q, 'user');
+    // 질문 메시지 공통 함수
+    window.addMsg = function(text, type) {
+      var msgClass = type === 'user' ? 'grw-msg grw-user' : 'grw-msg grw-bot';
+      mBox.innerHTML += `<div class="${msgClass}"><p class="grw-bbl">${text}</p></div>`;
+      mBox.scrollTop = mBox.scrollHeight;
+    };
+
+    window.showTyping = function() {
+      var typingDiv = document.createElement('div');
+      typingDiv.id = 'grw-loading-dots';
+      typingDiv.className = 'grw-typing';
+      typingDiv.innerHTML = '<div class="grw-dot"></div><div class="grw-dot"></div><div class="grw-dot"></div>';
+      mBox.appendChild(typingDiv);
+      mBox.scrollTop = mBox.scrollHeight;
+    };
+
+    window.hideTyping = function() {
+      var dots = document.getElementById('grw-loading-dots');
+      if(dots) dots.remove();
+    };
+
+    // FAQ 칩 클릭 이벤트
+    var chips = document.querySelectorAll('.grw-chip');
+    chips.forEach(function(chip) {
+      chip.onclick = function() {
+        var item = DATA[chip.getAttribute('data-key')];
+        addMsg(item.q, 'user');
+        showTyping();
+        setTimeout(function(){
+          hideTyping();
+          addMsg(item.a, 'bot');
+        }, 350);
+      };
+    });
+
+    // 🎯 요청하신 원래 이메일 타이머 로직 100% 복구 및 적용 완료!
+    document.getElementById('grw-mail').onclick = function(e) {
+      e.stopPropagation();
+      addMsg("이메일로 문의하고 싶어요.", 'user');
       showTyping();
       setTimeout(function(){
         hideTyping();
-        addMsg(item.a, 'bot');
+        addMsg("아래 이메일로 문의해 주시면 빠르게 답변드리겠습니다 😊\n📧 rele.help@kt.com", 'bot');
       }, 350);
     };
-  });
-
-  function hideTyping() {
-    var dots = document.getElementById('grw-loading-dots');
-    if(dots) dots.remove();
   }
 
-  // 🎯 요청하신 원래 이메일 타이머 로직 100% 복구 및 적용 완료!
-  document.getElementById('grw-mail').onclick = function(e) {
-    e.stopPropagation();
-    addMsg("이메일로 문의하고 싶어요.", 'user');
-    showTyping();
-    setTimeout(function(){
-      hideTyping();
-      addMsg("아래 이메일로 문의해 주시면 빠르게 답변드리겠습니다 😊\n📧 rele.help@kt.com", 'bot');
-    }, 350);
-  };
+  injectWidget();
 })();
