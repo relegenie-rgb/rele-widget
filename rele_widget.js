@@ -73,10 +73,11 @@
   container.id = 'grw-container';
   container.innerHTML = `
 <button id="grw-bubble" type="button">
- <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2">
-  <path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>
-  <path d="M22 22l-3-3m0 0a1 1 0 1 0-2 2 1 1 0 0 0 2-2z" stroke-width="1.5"/>
-</svg>
+ // grw-bubble SVG 영역
+  bubble.innerHTML = `
+<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 2a10 10 0 1 0 10 10 10 10 0 0 0-10-10zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z" fill-opacity="0.2"/><circle cx="12" cy="12" r="3"/><path d="M12 7v2M12 15v2M8 12h2M14 12h2" opacity="0.5"/>
+</svg>`;
 </button>
 <div id="grw-window">
   <div id="grw-head">
