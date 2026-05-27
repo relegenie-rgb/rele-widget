@@ -138,9 +138,7 @@
     var el = document.createElement('div');
     el.innerHTML = [
       '<button id="grw-bubble" type="button" aria-label="고객센터 열기">',
-        '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">',
-          '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>',
-        '</svg>',
+        '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="10" width="20" height="12" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/><circle cx="9" cy="16" r="1" fill="#fff" stroke="none"/><circle cx="15" cy="16" r="1" fill="#fff" stroke="none"/><line x1="12" y1="2" x2="12" y2="5"/></svg>',
       '</button>',
       '<div id="grw-window">',
         '<div id="grw-head">',
