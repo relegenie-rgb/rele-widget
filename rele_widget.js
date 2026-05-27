@@ -1,4 +1,4 @@
- (function(){
+(function(){
   var DATA = {
     settlement: {
       q: "정산금은 언제 입금되나요?",
